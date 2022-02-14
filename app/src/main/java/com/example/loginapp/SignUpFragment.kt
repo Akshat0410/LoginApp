@@ -1,6 +1,9 @@
 package com.example.loginapp
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.loginapp.databinding.FragmentSignUpBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import java.util.regex.Pattern
 
@@ -20,7 +24,6 @@ class SignUpFragment : Fragment() {
     private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
-    private val PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})"
 
 
     override fun onCreateView(
@@ -38,14 +41,12 @@ class SignUpFragment : Fragment() {
 
         binding.signUp.setOnClickListener {
             val name = binding.name.text.toString().trim()
-            val email = binding.name.text.toString().trim()
-            val password = binding.name.text.toString().trim()
-
-            registerUser(name, email, password)
+            val email = binding.emailReg.text.toString().trim()
+            val password = binding.passReg.text.toString().trim()
 
 
             if (name.length > 1) {
-                if (isValidEmail(email)) {
+                if (email.isValidEmail()) {
                     if (isValidPassword(password)) {
                         registerUser(name, email, password)
                     } else {
@@ -83,16 +84,15 @@ class SignUpFragment : Fragment() {
                 ")+"
     )
 
-    private fun isValidEmail(email: String): Boolean {
-        return EMAIL_ADDRESS_PATTERN.matcher(email).matches();
-    }
-
+    fun String.isValidEmail() =
+        !TextUtils.isEmpty(this) && Patterns.EMAIL_ADDRESS.matcher(this).matches()
 
     private fun registerUser(name: String, email: String, password: String) {
 
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 findNavController().navigate(R.id.action_signUpFragment_to_dashBoardFragment)
+                it.result.user?.updateProfile(userProfileChangeRequest { displayName = name })
                 Toast.makeText(requireContext(), "Registration successful", Toast.LENGTH_SHORT)
                     .show()
             }
@@ -105,15 +105,17 @@ class SignUpFragment : Fragment() {
     }
 
     fun isValidPassword(password: String?): Boolean {
-        val passwordREGEX = Pattern.compile("^" +
-                "(?=.*[0-9])" +         //at least 1 digit
-                "(?=.*[a-z])" +         //at least 1 lower case letter
-                "(?=.*[A-Z])" +         //at least 1 upper case letter
-                "(?=.*[a-zA-Z])" +      //any letter
-                "(?=.*[@#$%^&+=])" +    //at least 1 special character
-                "(?=\\S+$)" +           //no white spaces
-                ".{8,}" +               //at least 8 characters
-                "$");
+        val passwordREGEX = Pattern.compile(
+            "^" +
+                    "(?=.*[0-9])" +         //at least 1 digit
+                    "(?=.*[a-z])" +         //at least 1 lower case letter
+                    "(?=.*[A-Z])" +         //at least 1 upper case letter
+                    "(?=.*[a-zA-Z])" +      //any letter
+                    "(?=.*[@#$%^&+=])" +    //at least 1 special character
+                    "(?=\\S+$)" +           //no white spaces
+                    ".{8,}" +               //at least 8 characters
+                    "$"
+        );
         return passwordREGEX.matcher(password).matches()
     }
 
