@@ -16,6 +16,10 @@
         <action
             android:id="@+id/action_login_to_signUpFragment"
             app:destination="@id/signUpFragment" />
+
+        <action
+            android:id="@+id/action_login_to_login"
+            app:destination="@id/login"/>
     </fragment>
     <fragment
         android:id="@+id/authFragment"
@@ -28,6 +32,9 @@
         <action
             android:id="@+id/action_authFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_authFragment_to_dashBoardFragment"
+            app:destination="@id/dashBoardFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"

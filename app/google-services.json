@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "905453614740",
+    "project_id": "login-app-e4fad",
+    "storage_bucket": "login-app-e4fad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905453614740:android:32d835a7e8360fad702681",
+        "android_client_info": {
+          "package_name": "com.example.loginapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "905453614740-kc3q1soq6sggrrr568po6r16pag6aci4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLFrnC8CGUl3NHZUvC6dBu8P3ahz39ygg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "905453614740-kc3q1soq6sggrrr568po6r16pag6aci4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
